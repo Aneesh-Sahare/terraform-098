@@ -1,22 +1,20 @@
-#KEY
+# KEY PAIR
 resource "aws_key_pair" "deployer" {
   key_name   = "terra-key-6867"
-  public_key = file("/home/ubuntu/terra")
+  public_key = file("/home/ubuntu/terra/terraform.pub")
 }
 
-#VPC
-resource "aws_default_vpc" "default" {
+# DEFAULT VPC
+resource "aws_default_vpc" "default" {}
 
-}
-
-#SG
+# SECURITY GROUP
 resource "aws_security_group" "allow_user_connect" {
-  name        = "allow TLS"
+  name        = "allow-tls"
   description = "Allow user to connect"
   vpc_id      = aws_default_vpc.default.id
-  
+
   ingress {
-    description = "port 22 allow"
+    description = "Allow SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -24,27 +22,30 @@ resource "aws_security_group" "allow_user_connect" {
   }
 
   egress {
-    description = " allow all outgoing traffic "
+    description = "Allow all outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
 
-#EC2
+# EC2 INSTANCE
 resource "aws_instance" "testinstance" {
-  ami             = data.aws_ami.os_image.id
-  instance_type   = "t2.micro"  
-  key_name        = aws_key_pair.deployer.key_name                         #interpolation
-  security_groups = [aws_security_group.allow_user_to_connect.name]
+  ami             = "ami-02d26659fd82cf299"
+  instance_type   = "t2.micro"
+  key_name        = aws_key_pair.deployer.key_name
+  security_groups = [aws_security_group.allow_user_connect.name]
+
   tags = {
     Name = "Terra-Automated"
   }
- 
 
-#COMMANDS
- provisioner "remote-exec" {
+  # PROVISIONER
+  provisioner "remote-exec" {
     inline = [
-      "sudo apt update -y" 
+      "sudo apt update -y"
     ]
   }
+}
+
