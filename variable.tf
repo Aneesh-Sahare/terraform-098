@@ -18,3 +18,10 @@ variable "my_enviroment" {
   description = "Instance type for the EC2 instance"
   default     = "dev"
 }
+
+variable "db_tablename" {
+  type= "string"
+  description = "Ice"
+  default     = "dev"
+}
+
