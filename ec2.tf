@@ -5,7 +5,9 @@ resource "aws_key_pair" "deployer" {
 }
 
 # DEFAULT VPC
-resource "aws_default_vpc" "default" {}
+resource "aws_default_vpc" "default" {
+
+}
 
 # SECURITY GROUP
 resource "aws_security_group" "allow_user_connect" {
@@ -39,13 +41,6 @@ resource "aws_instance" "testinstance" {
 
   tags = {
     Name = "Terra-Automated"
-  }
-
-  # PROVISIONER
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update -y"
-    ]
-  }
+  }  
 }
 
