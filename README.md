@@ -1,1 +1,3 @@
-# terraform-098
+aws s3 ls
+aws ec2 describe-instances
+aws dynamodb list-tables
