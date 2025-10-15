@@ -20,7 +20,7 @@ variable "my_enviroment" {
 }
 
 variable "db_tablename" {
-  type= "string"
+  type= string
   description = "Ice"
   default     = "dev"
 }
